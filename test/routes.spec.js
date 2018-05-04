@@ -82,13 +82,11 @@ describe('API Routes', () => {
     })
   })
 
-  describe('POST /api/v1/foods', function(){
+  describe('POST /api/v1/foods', () => {
     it('creates a new food and returns the food item if successful', () => {
       return chai.request(server)
       .post('/api/v1/foods')
-      .send({
-        food: { name: 'Cheese', calories: 200 }
-      })
+      .send({ food: { name: 'Cheese', calories: 200 } })
       .then(response => {
         response.should.have.status(201)
         response.should.be.json
@@ -99,6 +97,15 @@ describe('API Routes', () => {
       })
       .catch(error => {
         throw error
+      })
+    })
+
+    it('returns a 400 status code if the food item is not created successfully', () => {
+      return chai.request(server)
+      .post('/api/v1/foods')
+      .send({ food: { calories: 5 } })
+      .then(response => {
+        response.should.have.status(400)
       })
     })
   })
