@@ -82,7 +82,7 @@ describe('API Routes', () => {
     })
   })
 
-  describe('POST /api/v1/foods', () => {
+  describe('POST /api/v1/foods', function() {
     it('creates a new food and returns the food item if successful', () => {
       return chai.request(server)
       .post('/api/v1/foods')
@@ -130,6 +130,15 @@ describe('API Routes', () => {
         response.should.have.status(200)
         response.should.be.json
         response.body.should.deep.equal({id: 1, name: "Chocolate Covered Banana", calories: 500 })
+      })
+    })
+
+    it('returns a 404 status code if a food with the given id DNE', () => {
+      return chai.request(server)
+      .patch('/api/v1/foods/9')
+      .send({ food: { name: "Chocolate Covered Banana", calories: 500 } })
+      .then(response => {
+        response.should.have.status(404)
       })
     })
   })
