@@ -61,6 +61,9 @@ describe('API Routes', () => {
         response.body.name.should.equal('Banana')
         response.body.calories.should.equal(150)
       })
+      .catch(error => {
+        throw error
+      })
     })
 
     it('returns a different food object when passed another :id', () => {
@@ -71,13 +74,35 @@ describe('API Routes', () => {
         response.body.name.should.equal('Yogurt')
         response.body.calories.should.equal(550)
       })
+      .catch(error => {
+        throw error
+      })
     })
 
     it('returns a status code 404 if the food is not found', () => {
       return chai.request(server)
-      .get('/api/v1/9')
+      .get('/api/v1/foods/9')
       .then(response => {
         response.should.have.status(404)
+      })
+    })
+  })
+
+  describe('POST /api/v1/foods', () => {
+    it('creates a new food and returns the food item if successful', () => {
+      return chai.request(server)
+      .post('/api/v1/foods')
+      .send({food: { name: 'Cheese', calories: 200 } })
+      .then(response => {
+        response.should.have.status(201)
+        response.should.be.json
+        response.body.should.be.a('object')
+        response.body.id.should.equal(4)
+        response.body.name.should.equal('Cheese')
+        response.body.name.should.equal(200)
+      })
+      .catch(error => {
+        throw error
       })
     })
   })
