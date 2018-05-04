@@ -28,9 +28,9 @@ describe('API Routes', () => {
     .done()
   })
 
-  describe('POST /api/v1/foods', function(){
+  describe('GET /api/v1/foods', function(){
     this.timeout(0)
-    it('returns all foods currently in the database', function(){
+    it('returns all foods currently in the database', () => {
       return chai.request(server)
       .get('/api/v1/foods')
       .then((response) => {
@@ -45,6 +45,21 @@ describe('API Routes', () => {
       })
       .catch((error) => {
         throw error
+      })
+    })
+  })
+
+  describe('GET /api/v1/foods/:id', function(){
+    it('returns the food object with the specific :id in the url', () => {
+      return chai.request(server)
+      .get('/api/v1/foods/1')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.be.a('object')
+        response.body.id.should.equal(1)
+        response.body.name.should.equal('Banana')
+        response.body.calories.should.equal(150)
       })
     })
   })
