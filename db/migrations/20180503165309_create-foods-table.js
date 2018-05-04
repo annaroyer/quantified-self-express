@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     table.increments()
     table.string('name').notNullable()
     table.integer('calories').notNullable()
-    table.timestamps()
+    table.timestamps(true, true)
   })
 };
 
