@@ -1,5 +1,4 @@
 const Food = require('../models/food')
-const pry = require('pryjs')
 
 class FoodsController {
 
@@ -27,7 +26,13 @@ class FoodsController {
 
   static update(request, response, next){
     Food.update(request.params.id, request.body.food)
-    .then(food => response.json(food))
+    .then(food => {
+      if(food){
+        response.json(food)
+      } else {
+        response.sendStatus(404)
+      }
+    })
   }
 }
 
