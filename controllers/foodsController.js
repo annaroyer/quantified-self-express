@@ -24,6 +24,11 @@ class FoodsController {
     .then(food => response.status(201).json(food))
     .catch(error => response.sendStatus(400))
   }
+
+  static update(request, response, next){
+    Food.update(request.params.id, request.body.food)
+    .then(food => response.json(food))
+  }
 }
 
 module.exports = FoodsController
