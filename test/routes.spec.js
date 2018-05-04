@@ -62,5 +62,15 @@ describe('API Routes', () => {
         response.body.calories.should.equal(150)
       })
     })
+
+    it('returns a different food object when passed another :id', () => {
+      return chai.request(server)
+      .get('/api/v1/foods/2')
+      .then(response => {
+        response.body.id.should.equal(2)
+        response.body.name.should.equal('Yogurt')
+        response.body.calories.should.equal(550)
+      })
+    })
   })
 })
