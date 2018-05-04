@@ -107,6 +107,13 @@ describe('API Routes', () => {
       .then(response => {
         response.should.have.status(400)
       })
+
+      return chai.request(server)
+      .post('/api/v1/foods')
+      .send({ food: { name: "crackers" } })
+      .then(response => {
+        response.should.have.status(400)
+      })
     })
   })
 })
