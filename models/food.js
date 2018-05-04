@@ -14,7 +14,17 @@ class Food {
   }
 
   static create(attributes){
-    return database('foods').returning(['id', 'name', 'calories']).insert(attributes)
+    return database('foods')
+    .insert(attributes)
+    .returning(['id', 'name', 'calories'])
+    .then(rows => rows[0])
+  }
+
+  static update(id, attributes){
+    return database('foods')
+    .where('id', id)
+    .update(attributes)
+    .returning(['id', 'name', 'calories'])
     .then(rows => rows[0])
   }
 }
