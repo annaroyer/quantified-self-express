@@ -72,5 +72,13 @@ describe('API Routes', () => {
         response.body.calories.should.equal(550)
       })
     })
+
+    it('returns a status code 404 if the food is not found', () => {
+      return chai.request(server)
+      .get('/api/v1/9')
+      .then(response => {
+        response.should.have.status(404)
+      })
+    })
   })
 })
