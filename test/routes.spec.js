@@ -28,15 +28,16 @@ describe('API Routes', () => {
     .done()
   })
 
-  describe('POST /api/v1/foods', () => {
-    it('returns all foods currently in the database', () => {
+  describe('POST /api/v1/foods', function(){
+    this.timeout(0)
+    it('returns all foods currently in the database', function(){
       return chai.request(server)
       .get('/api/v1/foods')
       .then((response) => {
         response.should.have.status(200)
-        response.should.be('json')
+        response.should.be.json
         response.body.should.be.a('array')
-        response.body.length.should.be(3)
+        response.body.length.should.equal(3)
         response.body[0].should.be.a('object')
         response.body[0].id.should.equal(1)
         response.body[0].name.should.equal('Banana')
