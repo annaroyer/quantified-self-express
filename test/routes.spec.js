@@ -28,9 +28,9 @@ describe('API Routes', () => {
     .done()
   })
 
-  describe('POST /api/v1/foods', function(){
+  describe('GET /api/v1/foods', function(){
     this.timeout(0)
-    it('returns all foods currently in the database', function(){
+    it('returns all foods currently in the database', () => {
       return chai.request(server)
       .get('/api/v1/foods')
       .then((response) => {
@@ -45,6 +45,39 @@ describe('API Routes', () => {
       })
       .catch((error) => {
         throw error
+      })
+    })
+  })
+
+  describe('GET /api/v1/foods/:id', function(){
+    it('returns the food object with the specific :id in the url', () => {
+      return chai.request(server)
+      .get('/api/v1/foods/1')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.be.a('object')
+        response.body.id.should.equal(1)
+        response.body.name.should.equal('Banana')
+        response.body.calories.should.equal(150)
+      })
+    })
+
+    it('returns a different food object when passed another :id', () => {
+      return chai.request(server)
+      .get('/api/v1/foods/2')
+      .then(response => {
+        response.body.id.should.equal(2)
+        response.body.name.should.equal('Yogurt')
+        response.body.calories.should.equal(550)
+      })
+    })
+
+    it('returns a status code 404 if the food is not found', () => {
+      return chai.request(server)
+      .get('/api/v1/9')
+      .then(response => {
+        response.should.have.status(404)
       })
     })
   })

@@ -7,6 +7,11 @@ class Food {
   static all(){
     return database('foods').select('id', 'name', 'calories')
   }
+
+  static find(id){
+    return database('foods').where('id', id).select('id', 'name', 'calories')
+    .then(data => data[0])
+  }
 }
 
 module.exports = Food
