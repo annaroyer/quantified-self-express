@@ -100,19 +100,23 @@ describe('API Routes', () => {
       })
     })
 
-    it('returns a 400 status code if the food item is not created successfully', () => {
-      return chai.request(server)
-      .post('/api/v1/foods')
-      .send({ food: { calories: 5 } })
-      .then(response => {
-        response.should.have.status(400)
+    describe('returns 400 status code for unsuccessful post', () => {
+      it('requires a name', () => {
+        return chai.request(server)
+        .post('/api/v1/foods')
+        .send({ food: { calories: 5 } })
+        .then(response => {
+          response.should.have.status(400)
+        })
       })
 
-      return chai.request(server)
-      .post('/api/v1/foods')
-      .send({ food: { name: "crackers" } })
-      .then(response => {
-        response.should.have.status(400)
+      it('requires calories', () => {
+        return chai.request(server)
+        .post('/api/v1/foods')
+        .send({ food: { name: "crackers" } })
+        .then(response => {
+          response.should.have.status(400)
+        })
       })
     })
   })
