@@ -1,4 +1,5 @@
 const Food = require('../models/food')
+const pry = require('pryjs')
 
 class FoodsController {
 
@@ -21,6 +22,7 @@ class FoodsController {
   static create(request, response, next){
     Food.create(request.body.food)
     .then(food => response.status(201).json(food))
+    .catch(error => response.sendStatus(400))
   }
 }
 
