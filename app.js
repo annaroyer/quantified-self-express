@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+const bodyParser = require('body-parser')
 
 const foodsRouter = require('./routes/api/v1/foods')
 
@@ -24,6 +25,7 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json())
 
 app.use('/api/v1/foods', foodsRouter)
 
