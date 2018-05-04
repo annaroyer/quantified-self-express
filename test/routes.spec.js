@@ -28,8 +28,7 @@ describe('API Routes', () => {
     .done()
   })
 
-  describe('GET /api/v1/foods', function(){
-    this.timeout(0)
+  describe('GET /api/v1/foods', () => {
     it('returns all foods currently in the database', () => {
       return chai.request(server)
       .get('/api/v1/foods')
@@ -38,10 +37,9 @@ describe('API Routes', () => {
         response.should.be.json
         response.body.should.be.a('array')
         response.body.length.should.equal(3)
-        response.body[0].should.be.a('object')
-        response.body[0].id.should.equal(1)
-        response.body[0].name.should.equal('Banana')
-        response.body[0].calories.should.equal(150)
+        response.body[0].should.deep.equal({id: 1, name: 'Banana', calories: 150})
+        response.body[1].should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
+        response.body[2].should.deep.equal({id: 3, name: 'Apple', calories: 220})
       })
       .catch((error) => {
         throw error
@@ -49,7 +47,7 @@ describe('API Routes', () => {
     })
   })
 
-  describe('GET /api/v1/foods/:id', function(){
+  describe('GET /api/v1/foods/:id', () => {
     it('returns the food object with the specific :id in the url', () => {
       return chai.request(server)
       .get('/api/v1/foods/1')
@@ -57,9 +55,10 @@ describe('API Routes', () => {
         response.should.have.status(200)
         response.should.be.json
         response.body.should.be.a('object')
-        response.body.id.should.equal(1)
-        response.body.name.should.equal('Banana')
-        response.body.calories.should.equal(150)
+        response.body.should.deep.equal({id: 1, name: 'Banana', calories: 150})
+      })
+      .catch(error => {
+        throw error
       })
     })
 
@@ -67,17 +66,57 @@ describe('API Routes', () => {
       return chai.request(server)
       .get('/api/v1/foods/2')
       .then(response => {
-        response.body.id.should.equal(2)
-        response.body.name.should.equal('Yogurt')
-        response.body.calories.should.equal(550)
+        response.body.should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
+      })
+      .catch(error => {
+        throw error
       })
     })
 
     it('returns a status code 404 if the food is not found', () => {
       return chai.request(server)
-      .get('/api/v1/9')
+      .get('/api/v1/foods/9')
       .then(response => {
         response.should.have.status(404)
+      })
+    })
+  })
+
+  describe('POST /api/v1/foods', () => {
+    it('creates a new food and returns the food item if successful', () => {
+      return chai.request(server)
+      .post('/api/v1/foods')
+      .send({ food: { name: 'Cheese', calories: 200 } })
+      .then(response => {
+        response.should.have.status(201)
+        response.should.be.json
+        response.body.should.be.a('object')
+        Object.keys(response.body).length.should.equal(3)
+        response.body.name.should.equal('Cheese')
+        response.body.calories.should.equal(200)
+      })
+      .catch(error => {
+        throw error
+      })
+    })
+
+    describe('returns 400 status code for unsuccessful post', () => {
+      it('requires a name', () => {
+        return chai.request(server)
+        .post('/api/v1/foods')
+        .send({ food: { calories: 5 } })
+        .then(response => {
+          response.should.have.status(400)
+        })
+      })
+
+      it('requires calories', () => {
+        return chai.request(server)
+        .post('/api/v1/foods')
+        .send({ food: { name: "crackers" } })
+        .then(response => {
+          response.should.have.status(400)
+        })
       })
     })
   })

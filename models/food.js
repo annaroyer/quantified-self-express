@@ -10,7 +10,12 @@ class Food {
 
   static find(id){
     return database('foods').where('id', id).select('id', 'name', 'calories')
-    .then(data => data[0])
+    .then(rows => rows[0])
+  }
+
+  static create(attributes){
+    return database('foods').returning(['id', 'name', 'calories']).insert(attributes)
+    .then(rows => rows[0])
   }
 }
 
