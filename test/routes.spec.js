@@ -38,10 +38,9 @@ describe('API Routes', () => {
         response.should.be.json
         response.body.should.be.a('array')
         response.body.length.should.equal(3)
-        response.body[0].should.be.a('object')
-        response.body[0].id.should.equal(1)
-        response.body[0].name.should.equal('Banana')
-        response.body[0].calories.should.equal(150)
+        response.body[0].should.deep.equal({id: 1, name: 'Banana', calories: 150})
+        response.body[1].should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
+        response.body[2].should.deep.equal({id: 3, name: 'Apple', calories: 220})
       })
       .catch((error) => {
         throw error
@@ -57,9 +56,7 @@ describe('API Routes', () => {
         response.should.have.status(200)
         response.should.be.json
         response.body.should.be.a('object')
-        response.body.id.should.equal(1)
-        response.body.name.should.equal('Banana')
-        response.body.calories.should.equal(150)
+        response.body.should.deep.equal({id: 1, name: 'Banana', calories: 150})
       })
       .catch(error => {
         throw error
@@ -70,9 +67,7 @@ describe('API Routes', () => {
       return chai.request(server)
       .get('/api/v1/foods/2')
       .then(response => {
-        response.body.id.should.equal(2)
-        response.body.name.should.equal('Yogurt')
-        response.body.calories.should.equal(550)
+        response.body.should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
       })
       .catch(error => {
         throw error
@@ -88,18 +83,19 @@ describe('API Routes', () => {
     })
   })
 
-  describe('POST /api/v1/foods', () => {
+  describe('POST /api/v1/foods', function(){
+    this.timeout(0)
     it('creates a new food and returns the food item if successful', () => {
       return chai.request(server)
       .post('/api/v1/foods')
-      .send({food: { name: 'Cheese', calories: 200 } })
+      .send({
+        food: { name: 'Cheese', calories: 200 }
+      })
       .then(response => {
         response.should.have.status(201)
         response.should.be.json
         response.body.should.be.a('object')
-        response.body.id.should.equal(4)
-        response.body.name.should.equal('Cheese')
-        response.body.name.should.equal(200)
+        response.body.should.deep.equal({id: 4, name: 'Cheese', calories: 200})
       })
       .catch(error => {
         throw error
