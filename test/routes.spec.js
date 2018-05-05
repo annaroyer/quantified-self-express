@@ -37,10 +37,15 @@ describe('API Routes', function(){
       .then((response) => {
         response.should.have.status(200)
         response.should.be.json
-        response.body.should.deep.equal([{id: 1, name: 'Banana', calories: 150},
-                                         {id: 2, name: 'Yogurt', calories: 550},
-                                         {id: 3, name: 'Apple', calories: 220}
-                                       ])
+        response.body.should.deep.equal([
+          {id: 1, name: 'Banana', calories: 150},
+          {id: 2, name: 'Bagel Bites - Four Cheese', calories: 650},
+          {id: 3, name: 'Chicken Burrito', calories: 800},
+          {id: 4, name: 'Yogurt', calories: 550},
+          {id: 5, name: 'Gum', calories: 50},
+          {id: 6, name: 'Cheese', calories: 400},
+          {id: 7, name: 'Apple', calories: 220}
+        ])
       })
     })
   })
@@ -58,15 +63,15 @@ describe('API Routes', function(){
 
     it('returns a different food object when passed another :id', () => {
       return chai.request(server)
-      .get('/api/v1/foods/2')
+      .get('/api/v1/foods/4')
       .then(response => {
-        response.body.should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
+        response.body.should.deep.equal({id: 4, name: 'Yogurt', calories: 550})
       })
     })
 
     it('returns a 404 if a food with given id DNE', () => {
       return chai.request(server)
-      .get('/api/v1/foods/4')
+      .get('/api/v1/foods/8')
       .then(response => response.should.have.status(404))
     })
   })
@@ -74,40 +79,40 @@ describe('API Routes', function(){
   describe('POST /api/v1/foods', function() {
     it('creates a new food and returns the food item if successful', () => {
 
-      foodsCount().then(count => count.should.equal(3))
+      foodsCount().then(count => count.should.equal(7))
 
       return chai.request(server)
       .post('/api/v1/foods')
-      .send({ food: { name: 'Cheese', calories: 200 } })
+      .send({ food: { name: 'Crackers', calories: 350 } })
       .then(response => {
         response.should.have.status(201)
         response.should.be.json
         response.body.should.be.a('object')
         Object.keys(response.body).length.should.equal(3)
-        response.body.name.should.equal('Cheese')
-        response.body.calories.should.equal(200)
+        response.body.name.should.equal('Crackers')
+        response.body.calories.should.equal(350)
       })
 
-      foodsCount(),then(count => count.should.equal(4))
+      foodsCount(),then(count => count.should.equal(8))
     })
 
     describe('returns 400 status code for unsuccessful post', () => {
       it('requires a name', () => {
         return chai.request(server)
         .post('/api/v1/foods')
-        .send({ food: { calories: 5 } })
+        .send({ food: { calories: 350 } })
         .then(response => response.should.have.status(400))
 
-        foodsCount().then(count => count.should.equal(3))
+        foodsCount().then(count => count.should.equal(7))
       })
 
       it('requires calories', () => {
         return chai.request(server)
         .post('/api/v1/foods')
-        .send({ food: { name: "crackers" } })
+        .send({ food: { name: "Crackers" } })
         .then(response => response.should.have.status(400))
 
-        foodsCount().then(count => count.should.equal(3))
+        foodsCount().then(count => count.should.equal(7))
       })
     })
   })
@@ -139,30 +144,28 @@ describe('API Routes', function(){
       return chai.request(server)
       .patch('/api/v1/foods/9')
       .send({ food: { name: "Chocolate Covered Banana", calories: 500 } })
-      .then(response => {
-        response.should.have.status(404)
-      })
+      .then(response => response.should.have.status(404))
     })
   })
 
   describe('DELETE /api/v1/foods/:id', () => {
     it('deletes the food with the given id', () => {
 
-      foodsCount().then(count => count.should.equal(3))
+      foodsCount().then(count => count.should.equal(7))
 
       return chai.request(server)
       .delete('/api/v1/foods/1')
       .then(response => response.should.have.status(204))
 
-      foodsCount().then(count => count.should.equal(2))
+      foodsCount().then(count => count.should.equal(6))
     })
 
     it('returns a 404 if a food with the given id DNE', () => {
       return chai.request(server)
-      .delete('/api/v1/foods/400')
+      .delete('/api/v1/foods/8')
       .then(response => response.should.have.status(404))
 
-      foodsCount().then(count => count.should.equal(3))
+      foodsCount().then(count => count.should.equal(7))
     })
   })
 })
