@@ -1,6 +1,7 @@
 const environment = process.env.NODE_ENV || 'test'
 const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
+const pry = require('pryjs')
 
 class Food {
   static all(){
@@ -28,7 +29,11 @@ class Food {
   }
 
   static destroy(id){
-    return database.where('id', id).del()
+    if(this.find(id)){
+      return database('foods').where('id', id).del()
+    } else {
+      throw new Error()
+    }
   }
 }
 
