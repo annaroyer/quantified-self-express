@@ -176,7 +176,7 @@ describe('API Routes', function(){
       .then(response => {
         response.should.have.status(200)
         response.should.be.json
-        response.should.deep.equal(
+        response.body.should.deep.equal(
           [{ id: 1,
             name: "Breakfast",
             foods: [{ id: 1, name: "Banana", calories: 150},
