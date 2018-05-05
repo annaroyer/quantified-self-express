@@ -34,6 +34,11 @@ class FoodsController {
       }
     })
   }
+
+  static destroy(request, response, next){
+    Food.destroy(request.params.id)
+    .then(response.sendStatus(204))
+  }
 }
 
 module.exports = FoodsController
