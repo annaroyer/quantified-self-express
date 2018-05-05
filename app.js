@@ -7,6 +7,7 @@ const sassMiddleware = require('node-sass-middleware');
 const bodyParser = require('body-parser')
 
 const foodsRouter = require('./routes/api/v1/foods')
+const mealsRouter = require('./routes/api/v1/meals')
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 
 app.use('/api/v1/foods', foodsRouter)
+app.use('/api/v1/meals', mealsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
