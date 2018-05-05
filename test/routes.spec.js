@@ -57,7 +57,7 @@ describe('API Routes', () => {
         response.body.should.be.a('object')
         response.body.should.deep.equal({id: 1, name: 'Banana', calories: 150})
       })
-      .catch(error => {
+      .catch((error) => {
         throw error
       })
     })
@@ -68,7 +68,7 @@ describe('API Routes', () => {
       .then(response => {
         response.body.should.deep.equal({id: 2, name: 'Yogurt', calories: 550})
       })
-      .catch(error => {
+      .catch((error) => {
         throw error
       })
     })
@@ -95,7 +95,7 @@ describe('API Routes', () => {
         response.body.name.should.equal('Cheese')
         response.body.calories.should.equal(200)
       })
-      .catch(error => {
+      .catch((error) => {
         throw error
       })
     })
@@ -108,6 +108,9 @@ describe('API Routes', () => {
         .then(response => {
           response.should.have.status(400)
         })
+        .catch(error => {
+          throw error
+        })
       })
 
       it('requires calories', () => {
@@ -116,6 +119,9 @@ describe('API Routes', () => {
         .send({ food: { name: "crackers" } })
         .then(response => {
           response.should.have.status(400)
+        })
+        .catch(error => {
+          throw error
         })
       })
     })
@@ -131,6 +137,9 @@ describe('API Routes', () => {
         response.should.be.json
         response.body.should.deep.equal({id: 1, name: "Chocolate Covered Banana", calories: 500 })
       })
+      .catch((error) => {
+        throw error
+      })
     })
 
     it('returns a 404 status code if a food with the given id DNE', () => {
@@ -139,6 +148,9 @@ describe('API Routes', () => {
       .send({ food: { name: "Chocolate Covered Banana", calories: 500 } })
       .then(response => {
         response.should.have.status(404)
+      })
+      .catch((error) => {
+        throw error
       })
     })
   })
@@ -149,6 +161,17 @@ describe('API Routes', () => {
       .delete('/api/v1/foods/1')
       .then(response => {
         response.should.have.status(204)
+      })
+      .catch((error) => {
+        throw error
+      })
+    })
+
+    it('returns a 404 status code if the food with that id does not exist', () => {
+      return chai.request(server)
+      .delete('/api/v1/foods/400')
+      .then(response => {
+        response.should.have.status(404)
       })
     })
   })
