@@ -4,7 +4,7 @@ class FoodsController {
 
   static index(request, response, next){
     Food.all()
-    .then(foods => response.status(200).json(foods))
+    .then(foods => response.json(foods))
   }
 
   static show(request, response, next){
