@@ -97,6 +97,8 @@ describe('API Routes', function(){
         .post('/api/v1/foods')
         .send({ food: { calories: 5 } })
         .then(response => response.should.have.status(400))
+
+        foodsCount().then(count => count.should.equal(3))
       })
 
       it('requires calories', () => {
@@ -104,6 +106,8 @@ describe('API Routes', function(){
         .post('/api/v1/foods')
         .send({ food: { name: "crackers" } })
         .then(response => response.should.have.status(400))
+
+        foodsCount().then(count => count.should.equal(3))
       })
     })
   })
@@ -154,9 +158,6 @@ describe('API Routes', function(){
     })
 
     it('returns a 404 if a food with the given id DNE', () => {
-
-      foodsCount().then(count => count.should.equal(3))
-
       return chai.request(server)
       .delete('/api/v1/foods/400')
       .then(response => response.should.have.status(404))
