@@ -36,8 +36,15 @@ class FoodsController {
   }
 
   static destroy(request, response, next){
-    Food.destroy(request.params.id)
-    .then(response.sendStatus(204))
+    Food.find(request.params.id)
+    .then(food => {
+      if(food){
+        Food.destroy(food.id)
+        .then(response.sendStatus(204))
+      } else {
+        response.sendStatus(404)
+      }
+    })
   }
 }
 
