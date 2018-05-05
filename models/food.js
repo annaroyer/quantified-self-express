@@ -29,11 +29,7 @@ class Food {
   }
 
   static destroy(id){
-    if(this.find(id)){
-      return database('foods').where('id', id).del()
-    } else {
-      throw new Error()
-    }
+    return database('foods').where('id', id).del()
   }
 }
 
