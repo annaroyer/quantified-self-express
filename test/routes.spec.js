@@ -213,14 +213,14 @@ describe('API Routes', function(){
       .then(response => {
         response.should.have.status(200)
         response.should.be.json
-        response.should.deep.equal({ id: 1,
-          name: "Breakfast",
-          foods:
-          [{ id: 1, name: "Banana", calories: 150},
-          { id: 4, name: "Yogurt", calories: 550},
-          { id: 7, name: "Apple", calories: 220}]
+        response.body.should.deep.equal(
+          { id: 1,
+            name: "Breakfast",
+            foods: [{ id: 1, name: "Banana", calories: 150},
+                    { id: 4, name: "Yogurt", calories: 550},
+                    { id: 7, name: "Apple", calories: 220}]
         })
       })
-    })    
+    })
   })
 })
