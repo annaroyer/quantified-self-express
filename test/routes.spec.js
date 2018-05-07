@@ -275,4 +275,39 @@ describe('API Routes', function(){
       recordsCount('meal_foods').then(count => count.should.equal(12))
     })
   })
+
+  describe('DELETE /api/v1/meals/:meal_id/foods/:id', () => {
+    it('removes the food with the given id from the meal with given meal_id', () => {
+
+      recordsCount('meal_foods').then(count => count.should.equal(12))
+
+      return chai.request(server)
+      .delete('/api/v1/meals/1/foods/1')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.deep.equal({
+          message: "Successfully removed Banana from Breakfast"
+        })
+      })
+
+      recordsCount('meal_foods').then(count => count.should.equal(11))
+    })
+
+    it('returns a 404 if a meal with the given meal_id DNE', () => {
+      return chai.request(server)
+      .delete('/api/v1/meals/5/foods/1')
+      .then(response => response.should.have.status(404))
+
+      recordsCount('meal_foods').then(count => count.should.equal(12))
+    })
+
+    it('returns a 404 if a food with the given food_id DNE', () => {
+      return chai.request(server)
+      .delete('/api/v1/meals/4/foods/13')
+      .then(response => response.should.have.status(404))
+
+      recordsCount('meal_foods').then(count => count.should.equal(12))
+    })
+  })
 })
