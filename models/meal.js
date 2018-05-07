@@ -6,14 +6,12 @@ class Meal {
 
   static all(){
     return database('meals').select('id', 'name')
-    .then(meals => {
-      return Promise.all(meals.map(this.setFoods))
-    })
+    .then(meals => Promise.all(meals.map(this.setFoods)))
   }
 
     static find(id){
       return database('meals').where('id', id).select('id', 'name')
-      .then(rows => this.setFoods(rows[0]))
+      .then(rows => rows[0])
     }
 
     static setFoods(meal){
