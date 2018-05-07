@@ -8,7 +8,14 @@ class MealsController {
 
   static show(request, response, next){
     Meal.find(request.params.meal_id)
-    .then(meal => response.json(meal))
+    .then(meal => {
+      if(meal){
+        Meal.setFoods(meal)
+        .then(meal => response.json(meal))
+      } else {
+        response.sendStatus(404)
+      }
+    })
   }
 }
 
