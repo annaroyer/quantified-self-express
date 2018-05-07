@@ -222,5 +222,11 @@ describe('API Routes', function(){
         })
       })
     })
+
+    it('returns a 404 if a meal with given meal_id DNE', () => {
+      return chai.request(server)
+      .get('/api/v1/meals/5/foods')
+      .then(response => response.should.have.status(404))
+    })
   })
 })
