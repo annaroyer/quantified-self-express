@@ -3,10 +3,8 @@ const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
 class Meal {
-
   static all(){
-    return database('meals').select('id', 'name')
-    .then(meals => Promise.all(meals.map(this.setFoods)))
+    return database('meals').select('id', 'name').map(this.setFoods)
   }
 
     static find(id){
