@@ -13,6 +13,13 @@ class MealFood {
     })
   }
 
+  static destroy(meal_id, food_id){
+    return database('meal_foods')
+    .where('meal_foods.meal_id', meal_id)
+    .where('meal_foods.food_id', food_id)
+    .del()
+  }
+
   static message(meal_id, food_id) {
     return database('meal_foods')
     .select({mealName: 'meals.name'}, {foodName: 'foods.name'})
