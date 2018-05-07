@@ -205,4 +205,28 @@ describe('API Routes', function(){
       })
     })
   })
+
+  describe('GET /api/v1/meal/:meal_id/foods', () => {
+    it('returns the meal with given meal_id and all its associated foods', () => {
+      return chai.request(server)
+      .get('/api/v1/meals/1/foods')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.deep.equal(
+          { id: 1,
+            name: "Breakfast",
+            foods: [{ id: 1, name: "Banana", calories: 150},
+                    { id: 4, name: "Yogurt", calories: 550},
+                    { id: 7, name: "Apple", calories: 220}]
+        })
+      })
+    })
+
+    it('returns a 404 if a meal with given meal_id DNE', () => {
+      return chai.request(server)
+      .get('/api/v1/meals/5/foods')
+      .then(response => response.should.have.status(404))
+    })
+  })
 })
