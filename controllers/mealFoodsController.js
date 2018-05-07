@@ -8,8 +8,12 @@ class MealFoodsController {
     let food_id = parseInt(request.params.id)
     MealFood.create(meal_id, food_id)
     .then(mealFood => {
-      let message = `Successfully added ${mealFood.foodName} to ${mealFood.mealName}`
-      response.status(201).json({ message: message })
+      if(mealFood){
+        let message = `Successfully added ${mealFood.foodName} to ${mealFood.mealName}`
+        response.status(201).json({ message: message })
+      } else {
+        response.sendStatus(404)
+      }
     })
   }
 }
