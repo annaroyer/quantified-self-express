@@ -3,6 +3,8 @@ const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../app.js')
 
+chai.use(chaiHttp)
+
 const environment = process.env.NODE_ENV || 'test'
 const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
@@ -11,8 +13,6 @@ function foodsCount(){
   return database('foods').count('id')
   .then(count => parseInt(count[0].count))
 }
-
-chai.use(chaiHttp)
 
 describe('API Routes', function(){
   this.timeout(0)
@@ -166,6 +166,43 @@ describe('API Routes', function(){
       .then(response => response.should.have.status(404))
 
       foodsCount().then(count => count.should.equal(7))
+    })
+  })
+
+  describe('GET /api/v1/meals', () => {
+    it('returns all the meals in the database along with their associated foods', () => {
+      return chai.request(server)
+      .get('/api/v1/meals')
+      .then(response => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.deep.equal(
+          [{ id: 1,
+            name: "Breakfast",
+            foods: [{ id: 1, name: "Banana", calories: 150},
+                    { id: 4, name: "Yogurt", calories: 550},
+                    { id: 7, name: "Apple", calories: 220}]
+          },
+          { id: 2,
+            name: "Snack",
+            foods: [{ id: 1, name: "Banana", calories: 150},
+                    { id: 5, name: "Gum", calories: 50},
+                    { id: 6, name: "Cheese", calories: 400}]
+          },
+          { id: 3,
+            name: "Lunch",
+            foods: [{ id: 2, name: "Bagel Bites - Four Cheese", calories: 650},
+                    { id: 3, name: "Chicken Burrito", calories: 800},
+                    { id: 7, name: "Apple", calories: 220}]
+          },
+          { id: 4,
+            name: "Dinner",
+            foods: [{ id: 1, name: "Banana", calories: 150},
+                    { id: 2, name: "Bagel Bites - Four Cheese", calories: 650},
+                    { id: 3, name: "Chicken Burrito", calories: 800}]
+          }]
+        )
+      })
     })
   })
 })
