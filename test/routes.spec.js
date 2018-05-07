@@ -3,6 +3,8 @@ const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../app.js')
 
+chai.use(chaiHttp)
+
 const environment = process.env.NODE_ENV || 'test'
 const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
@@ -11,8 +13,6 @@ function foodsCount(){
   return database('foods').count('id')
   .then(count => parseInt(count[0].count))
 }
-
-chai.use(chaiHttp)
 
 describe('API Routes', function(){
   this.timeout(0)
