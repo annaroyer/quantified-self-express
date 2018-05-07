@@ -258,5 +258,21 @@ describe('API Routes', function(){
 
       recordsCount('meal_foods').then(count => count.should.equal(13))
     })
+
+    it('returns a 404 if a meal with the given meal_id DNE', () => {
+      return chai.request(server)
+      .post('/api/v1/meals/5/foods/4')
+      .then(response => response.should.have.status(404))
+
+      recordsCount('meal_foods').then(count => count.should.equal(12))
+    })
+
+    it('returns a 404 if a food with the given id DNE', () => {
+      return chai.request(server)
+      .post('/api/v1/meals/4/foods/13')
+      .then(response => response.should.have.status(404))
+
+      recordsCount('meal_foods').then(count => count.should.equal(12))
+    })
   })
 })
