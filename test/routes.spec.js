@@ -36,7 +36,7 @@ describe('API Routes', function(){
     it('returns all foods currently in the database', () => {
       return chai.request(server)
       .get('/api/v1/foods')
-      .then((response) => {
+      .then(response => {
         response.should.have.status(200)
         response.should.be.json
         response.body.should.deep.equal(allFoods)
