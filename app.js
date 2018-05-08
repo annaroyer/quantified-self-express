@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const foodsRouter = require('./routes/api/v1/foods')
 const mealsRouter = require('./routes/api/v1/meals')
