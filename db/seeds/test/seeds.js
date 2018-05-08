@@ -7,6 +7,9 @@ exports.seed = function(knex, Promise){
   .then(function () {
     return knex('foods').insert(foodsData)
   })
+  .then(function(){
+    return knex.raw(`ALTER SEQUENCE foods_id_seq RESTART 8`)
+  })
   .then(function() {
     return knex('meals').del()
     .then(function(){
@@ -15,8 +18,11 @@ exports.seed = function(knex, Promise){
   })
   .then(function() {
     return knex('meal_foods').del()
-    .then(function(){
-      return knex('meal_foods').insert(mealFoodsData)
-    })
+  })
+  .then(function(){
+    return knex('meal_foods').insert(mealFoodsData)
+  })
+  .then(function(){
+    return knex.raw(`ALTER SEQUENCE meal_foods_id_seq RESTART 13`)
   })
 }
