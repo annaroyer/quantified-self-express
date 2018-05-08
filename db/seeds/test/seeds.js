@@ -1,6 +1,6 @@
-const foodsData = require('../../../data/foods')
-const mealsData = require('../../../data/meals')
-const mealFoodsData = require('../../../data/mealFoods')
+const foodsData = require('../../../data/test/foods')
+const mealsData = require('../../../data/test/meals')
+const mealFoodsData = require('../../../data/test/mealFoods')
 
 exports.seed = function(knex, Promise){
   return knex('foods').del()

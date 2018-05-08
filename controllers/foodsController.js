@@ -19,9 +19,14 @@ class FoodsController {
   }
 
   static create(request, response, next){
-    Food.create(request.body.food)
-    .then(food => response.status(201).json(food))
-    .catch(error => response.sendStatus(400))
+    let calories = parseInt(request.body.food.calories)
+    let name = request.body.food.name
+    if(calories && name){
+      Food.create({name: name, calories: calories})
+      .then(food => response.status(201).json(food))
+    } else {
+      response.sendStatus(400)
+    }
   }
 
   static update(request, response, next){

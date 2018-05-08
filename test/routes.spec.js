@@ -77,7 +77,7 @@ describe('API Routes', function(){
 
       return chai.request(server)
       .post('/api/v1/foods')
-      .send({ food: { name: 'Crackers', calories: 350 } })
+      .send({ food: { name: 'Crackers', calories: '350' } })
       .then(response => {
         response.should.have.status(201)
         response.should.be.json
