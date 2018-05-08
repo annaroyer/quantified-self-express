@@ -12,9 +12,9 @@ exports.seed = function(knex, Promise){
   })
   .then(function() {
     return knex('meals').del()
-    .then(function(){
-      return knex('meals').insert(mealsData)
-    })
+  })
+  .then(function(){
+    return knex('meals').insert(mealsData)
   })
   .then(function() {
     return knex('meal_foods').del()

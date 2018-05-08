@@ -3,27 +3,25 @@ const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
 class MealFood {
-  static create(meal_id, food_id) {
+  static create(attributes) {
     return database('meal_foods')
-    .insert({meal_id: meal_id, food_id: food_id})
-    .return(this.message(meal_id, food_id))
+    .insert(attributes)
+    .return(this.message(attributes))
   }
 
-  static destroy(meal_id, food_id){
+  static destroy(attributes){
     return database('meal_foods')
-    .where('meal_foods.meal_id', meal_id)
-    .where('meal_foods.food_id', food_id)
+    .where(attributes)
     .del()
   }
 
-  static message(meal_id, food_id) {
+  static message(attributes) {
     return database('meal_foods')
     .select({mealName: 'meals.name'}, {foodName: 'foods.name'})
+    .where(attributes)
     .join('meals', {'meals.id': 'meal_foods.meal_id'})
     .join('foods', {'foods.id': 'meal_foods.food_id'})
-    .where('meal_foods.meal_id', meal_id)
-    .where('meal_foods.food_id', food_id)
-    .orderBy('meal_foods.created_at', 'desc').first()
+    .first()
   }
 }
 
