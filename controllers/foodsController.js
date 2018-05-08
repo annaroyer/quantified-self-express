@@ -19,10 +19,9 @@ class FoodsController {
   }
 
   static create(request, response, next){
-    let calories = parseInt(request.body.food.calories)
-    let name = request.body.food.name
-    if(calories && name){
-      Food.create({name: name, calories: calories})
+    let foodParams = request.body.food
+    if(foodParams.calories && foodParams.name){
+      Food.create(foodParams)
       .then(food => response.status(201).json(food))
     } else {
       response.sendStatus(400)
@@ -41,14 +40,13 @@ class FoodsController {
   }
 
   static destroy(request, response, next){
-    Food.find(request.params.id)
-    .then(food => {
-      if(food){
-        Food.destroy(food.id)
-        .then(response.sendStatus(204))
-      } else {
-        response.sendStatus(404)
-      }
+    Food.destroy(request.params.id)
+     .then(foodId => {
+       if(foodId){
+         response.sendStatus(204)
+       } else {
+         response.sendStatus(404)
+       }
     })
   }
 }
