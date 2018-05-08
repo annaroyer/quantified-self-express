@@ -9,7 +9,7 @@ const environment = process.env.NODE_ENV || 'test'
 const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
-const allFoods = require('../data/foods')
+const allFoods = require('../data/test/foods')
 
 function recordsCount(table){
   return database(table).count('id')
