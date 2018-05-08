@@ -1,7 +1,5 @@
 const Food = require('../models/food')
 
-const pry = require('pryjs')
-
 class FoodsController {
 
   static index(request, response, next){
