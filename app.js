@@ -27,6 +27,7 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
+app.use(cors())
 
 app.use('/api/v1/foods', foodsRouter)
 app.use('/api/v1/meals', mealsRouter)
